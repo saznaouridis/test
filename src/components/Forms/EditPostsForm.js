@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { updatePost } from '../api_helpers';
 import Button from "@material-ui/core/Button";
@@ -25,17 +25,13 @@ const EditPostsForm = (props) => {
   const [title, setTitle]= useState("");
 	const [content, setContent]= useState("");
 
- 
-  // skip applying an effect if certain values haven’t changed between re-renders. [ props ]
-  // const handleInputChange = e => {
-  //   try{
-  //   const { name, value } = e.target
-  //   setMenu({ ...menu, [name]: value })
-  // }catch (err) {
-  //   console.log(err);
-  //   alert("Error");
-  //    }
-  // }
+  const regex = /(<([^>]+)>)/ig;
+
+  useEffect(()=>{
+    setTitle(props.curPost.title.rendered)
+    setContent(props.curPost.content.rendered.replace(regex, ''))
+  },[])
+  
   return (
     <form
         className={classes.root} 
@@ -53,7 +49,7 @@ const EditPostsForm = (props) => {
         //window.location = "/country"
       } 
       
-        history.push('/post')
+        history.push('/post/view')
         
       }catch (err) {
       console.log(err);
@@ -63,11 +59,14 @@ const EditPostsForm = (props) => {
        id="filled-basic"
        label="Filled" 
        variant="filled" 
-       placeholder="Update Title" 
+       placeholder='Update Title'
        type="text"
        name="name" 
        value={title} 
-       onChange={e => setTitle(e.target.value)}
+       onChange={e => {
+        e.preventDefault()
+        setTitle(e.target.value)}
+      }
        />
       <TextField   
        id="filled-basic"
@@ -77,7 +76,10 @@ const EditPostsForm = (props) => {
        type="text" 
        name="author" 
        value={content}
-       onChange={e => setContent(e.target.value)}
+       onChange={e => {
+        e.preventDefault()
+        setContent(e.target.value)}
+      }
        />
        
       <p>
@@ -99,7 +101,10 @@ const EditPostsForm = (props) => {
         size="small" 
         variant="contained" 
         color="primary"
-        onClick={() => props.setEdit(false)} 
+        onClick={() => {
+          props.onUpdate()
+          props.setEdit(false)}
+      } 
         className="button muted-button"
         >
         Cancel

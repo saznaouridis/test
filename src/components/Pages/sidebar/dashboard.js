@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,26 +15,15 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItems from './listItems';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-//import Container from '@material-ui/core/Container';
-//import Grid from '@material-ui/core/Grid';
-//import Paper from '@material-ui/core/Paper';
-//import Link from '@material-ui/core/Link';
-//import Box from '@material-ui/core/Box';
+import MyContainer from './MyContainer';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import PageHome from '../PageHome';
+import { ListItem } from '@material-ui/core';
 
-
-
-/*function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://wpchamber.knowledge.gr/wp-admin/index.php/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}*/
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +31,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    display: 'flex',
+    alignItems: 'center', 
+    ...theme.mixins.toolbar,
   },
   toolbarIcon: {
     display: 'flex',
@@ -50,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -117,14 +112,15 @@ const useStyles = makeStyles((theme) => ({
   },
   
 }));
-export default function Dashboard() {
+export default function Dashboard({children}) {
   const classes = useStyles();
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   //const [anchorEl, setAnchorEl] = React.useState(null);
   const [setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(true);  
   };
   const handleDrawerClose = () => {
     setOpen(false);
@@ -179,11 +175,14 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List><ListItems/></List>
-        
+     <List><ListItems/></List>
       </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {children}
+      </main>
       
-      
+    
     </div>
   );
 }

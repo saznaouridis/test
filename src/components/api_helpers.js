@@ -37,7 +37,3 @@ export const deletePost = async (id) => {
     console.log( response );
   })
   }
-
-
-
-

@@ -15,8 +15,50 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import { Typography } from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination';
+import clsx from 'clsx';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://wpchamber.knowledge.gr/wp-admin/index.php/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4), 
+    height: '100vh'
+    
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+   
+
+  },
+  fixedHeight: {
+    height: 1200,
+  },
+  
+  
+}));
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -35,11 +77,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
-  },
-});
+
 const columns = [
   { id: 'title', label: 'Title', minWidth: 170 },
   { id: 'content', label: 'Content', minWidth: 100 },
@@ -71,37 +109,48 @@ const PostsForm = (props) => {
   const regex = /(<([^>]+)>)/ig;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const greekMonths = ['Ιανουαρίου','Φεβρουαρίου','Μαρτίου','Απριλίου','Μαΐου','Ιουνίου','Ιουλίου','Αυγούστου','Σεπτεμβρίου','Οκτωβρίου','Νοεμβρίου','Δεκεμβρίου']
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   return (
-  <TableContainer component={Paper}>
+
+<main className={classes.content}>
+      <div className={classes.appBarSpacer} />
+      <Container maxWidth="xl" className={classes.container}>
+      
+        <Grid container spacing={3}>
+          {}
+          <Grid item xs={12}   >
+            <Paper className={fixedHeightPaper}>
+              
+            <TableContainer component={Paper}>
   <Table className={classes.table} aria-label="customized table">
   <TableHead> 
     <TableRow>
       
-    <StyledTableCell>Title</StyledTableCell>
-    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Content</StyledTableCell>
-    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Date</StyledTableCell>
-    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Update</StyledTableCell>
-    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Delete</StyledTableCell>
+    <StyledTableCell>Τίτλος</StyledTableCell>
+    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Περιεχόμενο</StyledTableCell>
+    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Ημερομηνία</StyledTableCell>
+    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Επεξεργασία  </StyledTableCell>
+    <StyledTableCell align="center" fontWeight="fontWeightBold" m={1} >Διαγραφή</StyledTableCell>
     </TableRow>
   </TableHead>
   <TableBody>
   {props.posts.length > 0 ? ( 
     
-    props.posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((post) => 
+    props.posts.map((post) => 
     <Fragment>
        <StyledTableRow key={post.id}>
        <StyledTableCell component="th" scope="row">{post.title.rendered.replace(regex, '')}</StyledTableCell>
        <StyledTableCell align="left">{ post.content.rendered.replace(regex, '')}</StyledTableCell>
-       <StyledTableCell align="center">{post.date.replace(regex, '')}</StyledTableCell>
+       <StyledTableCell align="center">{post.date}</StyledTableCell>
        <StyledTableCell align="center"> 
        <Fab 
             color="default" 
@@ -113,7 +162,7 @@ const PostsForm = (props) => {
             onClick ={() => {
               props.editRow(post)
               
-              history.push('/add')
+              history.push('/post/add')
             }
           }   
          >
@@ -146,7 +195,7 @@ const PostsForm = (props) => {
     )} 
     </TableBody>  
     </Table>
-    <TablePagination
+    {/* <TablePagination
         rowsPerPageOptions={[10, 25]}
         component="div"
         count={props.posts.length }
@@ -154,9 +203,19 @@ const PostsForm = (props) => {
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      /> */}
   </TableContainer>
-  
-  );
+            </Paper>
+          </Grid>
+          {}
+
+        </Grid>
+        <Box pt={4}>
+          <Copyright />
+        </Box>
+      </Container>
+    </main> 
+    
+);  
 }
 export default PostsForm;

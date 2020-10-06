@@ -1,26 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import EditPostsForm from '../Forms/EditPostsForm';
 import AddPostsForm from '../Forms/AddPostsForm';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
-//TEST
-//import Box from '@material-ui/core/Box';
-//import Container from '@material-ui/core/Container';
-//import Paper from '@material-ui/core/Paper';
-//import Link from '@material-ui/core/Link';
-/*function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://wpchamber.knowledge.gr/wp-admin/index.php/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-} */
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -51,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
 
 const PageAddPosts = (props) => {
    const classes = useStyles();
-   
+   useEffect(()=>{
+    props.getApiData();
+   },[])
   return (
+
+    
     <div className={classes.root}>
      <Grid
         container 
@@ -68,11 +56,13 @@ const PageAddPosts = (props) => {
             className={classes.TypographyStyle}
             style={{ fontSize: 25  }}
           >
-            Edit
+            Επεξεργασία Δημοσίευσης
             </Typography>
             <EditPostsForm
               setEdit={props.setEdit}
+              posts={props.posts}
               curPost={props.curPost}
+              onUpdate={props.getApiData}
             />
           </Grid>
         ) : (
@@ -83,9 +73,9 @@ const PageAddPosts = (props) => {
             className={classes.TypographyStyle}
             style={{ fontSize: 25  }}
           >
-          Add a Post
+          Προθέστε Δημοσίευση
           </Typography>
-          <AddPostsForm ifDataChanged={props.ifDataChanged} />
+          <AddPostsForm setLoading={props.setLoading} getApiData={props.getApiData} />
           </Grid>
         )}
         </Grid>

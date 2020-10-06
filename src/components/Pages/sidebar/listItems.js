@@ -21,6 +21,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from '@material-ui/icons/Add';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import { useHistory } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
 //import history from '../../history';
 //import createBrowserHistory from 'history/createBrowserHistory';
 //const history = createBrowserHistory({forceRefresh:true});
@@ -84,14 +86,18 @@ const history = useHistory({forceRefresh:true});
   };
   return(
   <div>
+       
+       
 <ListItem button
   onClick={handleOrg1Click}
 >
+     
       <ListItemIcon>
              <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Πίνακας" />
             {openOrg1 ? <ExpandLess /> : <ExpandMore />}
+            
   </ListItem>
   <Collapse in={openOrg1} timeout="auto" unmountOnExit>
          <List component="div" disablePadding>
@@ -107,6 +113,7 @@ const history = useHistory({forceRefresh:true});
              </ListItem>
          </List>
   </Collapse>
+  
 <ListItem button
   onClick={handleOrg2Click}
 >
@@ -186,21 +193,21 @@ const history = useHistory({forceRefresh:true});
       <List component="div" disablePadding>
            <ListItem button className={classes.nested}>
                 <ListItemIcon>
-                     <ListItem button onClick={() => history.push("/post")}>
+                     <ListItem button onClick={() => history.push("/post/view")}>
                          <TrendingFlatIcon />
                      </ListItem>
                 </ListItemIcon>
-                <ListItem button onClick={() => history.push("/post")}>
+                <ListItem button onClick={() => history.push("/post/view")}>
                         <ListItemText primary="Σύνολο Δημοσιέυσεων" />
                 </ListItem>
            </ListItem>
            <ListItem button className={classes.nested}>
                 <ListItemIcon>
-                    <ListItem button onClick={() => history.push("/add")}>
+                    <ListItem button onClick={() => history.push("/post/add")}>
                          <AddIcon />
                     </ListItem>
                 </ListItemIcon>
-                <ListItem button onClick={() => history.push("/add")}>
+                <ListItem button onClick={() => history.push("/post/add")}>
                        <ListItemText primary="Προσθήκη Δημοσίευσης" />
                </ListItem>
            </ListItem>
@@ -330,11 +337,15 @@ const history = useHistory({forceRefresh:true});
                 </ListItemIcon>
                       <ListItemText primary="Φόρτωση Αρχείων" />
            </ListItem>
-          
+           
       </List>
+      
   </Collapse>
+
+  
+  
+  
 </div>
 );
   }
-export default ListItems;     
-   
+export default ListItems;

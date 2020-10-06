@@ -19,10 +19,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const AddPostsForm = (props) => {
+const AddPostsForm = ({getApiData,setLoading}) => {
 	const classes = useStyles();
 	const initialState = { };
-	const [ post, setPost ] = useState(initialState)
 
 	const [title, setTitle]= useState("");
 	const [content, setContent]= useState("");
@@ -30,26 +29,19 @@ const AddPostsForm = (props) => {
 
 	const history = useHistory();
 
-	const handleOnSubmit = e => {
+	const handleOnSubmit = async (e) => {
 		e.preventDefault()
 		try{
 			
 			if (!title || !content) {
 				alert("Invalid Input");
 			} else {
-				console.log(title);
-				console.log(content);
-				let res= addPost(title,content)
-				setTitle("");
-            	setContent("");
-				console.log(res);
-				setPost((prevState) => {
-					const data = [...prevState.data];
-					data.push(res.data);
-					return {...prevState, data};
-				});
+				await addPost(title,content);
+				console.log("ok");
+				setLoading(true);
 				
-				history.push('/post')
+				await getApiData();
+				history.push('/post/view');
 			}
 		}	catch (err) {
 			console.log(err);
@@ -89,5 +81,3 @@ const AddPostsForm = (props) => {
 	)
 }
 export default AddPostsForm;
-
-
